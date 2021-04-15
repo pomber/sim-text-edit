@@ -4,7 +4,7 @@ import "./transition.stories.css";
 import { diff, newDiff } from "./diff";
 import { storiesOf } from "@storybook/react";
 import fixtures from "./fixtures";
-import { Pre } from "./pre";
+import { Pre, PreContextProvider } from "./pre";
 import { history } from "./history";
 
 const stories = storiesOf("Transition");
@@ -16,30 +16,40 @@ fixtureNames.forEach((fixtureName) => {
 });
 
 function TransitionStory({ prev, next }) {
+  const [displayWhitespaces, setDisplayWhitespaces] = React.useState(false);
   return (
-    <div style={{ maxWidth: 600, margin: "0 auto" }}>
-      <div style={{ display: "flex" }}>
-        <div style={{ flex: 1 }}>
-          From:<Pre>{prev}</Pre>
+    <PreContextProvider displayWhitespaces={displayWhitespaces}>
+      <div style={{ maxWidth: 600, margin: "0 auto" }}>
+        <input
+          type="checkbox"
+          checked={displayWhitespaces}
+          onChange={() => setDisplayWhitespaces((x) => !x)}
+        ></input>
+        <label>Display whitespaces</label>
+        <hr />
+        <div style={{ display: "flex" }}>
+          <div style={{ flex: 1 }}>
+            From:<Pre>{prev}</Pre>
+          </div>
+          <div style={{ flex: 1 }}>
+            To:<Pre>{next}</Pre>
+          </div>
         </div>
-        <div style={{ flex: 1 }}>
-          To:<Pre>{next}</Pre>
-        </div>
+        <hr />
+        Result:
+        <WithProgress>
+          {(progress) => (
+            <Transition prev={prev} next={next} progress={progress} />
+          )}
+        </WithProgress>
+        <hr />
+        Changes:
+        <pre>{JSON.stringify(newDiff(prev, next), null, 2)}</pre>
+        <hr />
+        History:
+        <pre>{JSON.stringify(history(prev, next), null, 2)}</pre>
       </div>
-      <hr />
-      Result:
-      <WithProgress>
-        {(progress) => (
-          <Transition prev={prev} next={next} progress={progress} />
-        )}
-      </WithProgress>
-      <hr />
-      Changes:
-      <pre>{JSON.stringify(newDiff(prev, next), null, 2)}</pre>
-      <hr />
-      History:
-      <pre>{JSON.stringify(history(prev, next), null, 2)}</pre>
-    </div>
+    </PreContextProvider>
   );
 }
 
@@ -49,7 +59,7 @@ function WithProgress({ children, length = 2 }) {
     backward: false,
   });
   return (
-    <div style={{ height: 200 }}>
+    <div style={{ minHeight: 200 }}>
       <div style={{ display: "flex", margin: "10px 0" }}>
         <input
           style={{ flex: "1" }}

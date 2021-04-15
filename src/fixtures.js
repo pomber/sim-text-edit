@@ -35,5 +35,35 @@ foo {
   bar: "x" + "foobar"
 }`.trim()],
 
+// ---
+
+
+"Demo 1": [`
+const app = Vue.createApp({
+  template: \`
+    <h1>Hello World</h1>
+  \`,
+})
+
+app.mount('#root')
+`.trim(),`
+const app = Vue.createApp({
+  template: \`
+    <my-component></my-component>
+    <my-component></my-component>
+  \`,
+})
+
+app.component('my-component', {
+  template: \`
+    <div>
+      <button>Hello World</button>
+    </div>
+  \`,
+})
+
+app.mount('#root')`
+.trim()]
+
 
 };
