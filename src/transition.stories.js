@@ -19,7 +19,7 @@ fixtureNames.forEach((fixtureName) => {
 
 function TransitionStory({ prev, next }) {
   return (
-    <div>
+    <div style={{ width: 600, margin: "0 auto" }}>
       <div style={{ display: "flex" }}>
         <div style={{ flex: 1 }}>
           From:<Pre>{prev}</Pre>
