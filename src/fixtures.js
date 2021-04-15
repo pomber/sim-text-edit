@@ -3,7 +3,7 @@ export default {
 
   "Adding one line": [`
 foo {
-    bar
+  bar
 }`.trim(),`
 foo {
   bax
@@ -24,7 +24,7 @@ foo {
   bar: "x" + "foobar"
 }`.trim(),`
 foo {
-  bar: "x" + "foobar"
+  bar: "x" + "barfoo"
 }`.trim()],
 
 

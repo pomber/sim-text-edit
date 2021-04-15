@@ -46,3 +46,26 @@ export function diff(prev, next) {
   });
   return newChanges;
 }
+
+export function newDiff(prev, next) {
+  const changes = diffWordsWithSpace(prev, next, { newlineIsToken: true });
+  const chunks = [];
+  let cursor = 0;
+  changes.forEach((change) => {
+    if (change.added) {
+      chunks.push({ type: "insert", value: change.value, at: cursor });
+      cursor += change.value.length;
+    } else if (change.removed) {
+      chunks.push({
+        type: "delete",
+        value: change.value,
+        count: change.value.length,
+        at: cursor,
+      });
+    } else {
+      cursor += change.value.length;
+    }
+  });
+
+  return chunks;
+}

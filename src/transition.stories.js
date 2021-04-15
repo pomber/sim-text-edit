@@ -1,25 +1,23 @@
 import React from "react";
 import { Transition } from "./transition";
 import "./transition.stories.css";
-import { diff } from "./diff";
+import { diff, newDiff } from "./diff";
 import { storiesOf } from "@storybook/react";
 import fixtures from "./fixtures";
 import { Pre } from "./pre";
+import { history } from "./history";
 
 const stories = storiesOf("Transition");
 const fixtureNames = Object.keys(fixtures);
 
-console.log({ fixtureNames });
-
 fixtureNames.forEach((fixtureName) => {
   const [prev, next] = fixtures[fixtureName];
-  console.log(fixtureName, prev, next);
   stories.add(fixtureName, () => <TransitionStory prev={prev} next={next} />);
 });
 
 function TransitionStory({ prev, next }) {
   return (
-    <div style={{ width: 600, margin: "0 auto" }}>
+    <div style={{ maxWidth: 600, margin: "0 auto" }}>
       <div style={{ display: "flex" }}>
         <div style={{ flex: 1 }}>
           From:<Pre>{prev}</Pre>
@@ -37,7 +35,10 @@ function TransitionStory({ prev, next }) {
       </WithProgress>
       <hr />
       Changes:
-      <pre>{JSON.stringify(diff(prev, next), null, 2)}</pre>
+      <pre>{JSON.stringify(newDiff(prev, next), null, 2)}</pre>
+      <hr />
+      History:
+      <pre>{JSON.stringify(history(prev, next), null, 2)}</pre>
     </div>
   );
 }
