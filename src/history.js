@@ -28,9 +28,18 @@ function deletionHistory(start, chunk) {
 function insertionHistory(start, chunk) {
   const history = [];
   let prev = start;
-  for (let i = 0; i < chunk.value.length; i++) {
-    prev =
-      prev.slice(0, chunk.at + i) + chunk.value[i] + prev.slice(chunk.at + i);
+  let value = chunk.value;
+  const newLineEnd = value.match(/\n\s*$/);
+
+  if (newLineEnd) {
+    value = value.slice(0, newLineEnd.index);
+    const end = newLineEnd[0];
+    prev = start.slice(0, chunk.at) + end + prev.slice(chunk.at);
+    history.push(prev);
+  }
+
+  for (let i = 0; i < value.length; i++) {
+    prev = prev.slice(0, chunk.at + i) + value[i] + prev.slice(chunk.at + i);
 
     history.push(prev);
   }

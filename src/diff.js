@@ -49,11 +49,11 @@ export function diff(prev, next) {
 
 export function newDiff(prev, next) {
   const changes = diffWordsWithSpace(prev, next, { newlineIsToken: true });
-  const chunks = [];
+  let chunks = [];
   let cursor = 0;
   changes.forEach((change) => {
     if (change.added) {
-      chunks.push({ type: "insert", value: change.value, at: cursor });
+      chunks = chunks.concat(splitInsertions(change, cursor));
       cursor += change.value.length;
     } else if (change.removed) {
       chunks.push({
@@ -67,5 +67,24 @@ export function newDiff(prev, next) {
     }
   });
 
+  return chunks;
+}
+
+function splitInsertions(change, cursor) {
+  // matches just after EOL followed by any space
+  const splitRegex = /(?<=\n\s*)(?!\s)/g;
+  const linesChanged = change.value.split(splitRegex);
+  const chunks = [];
+  let at = cursor;
+  linesChanged.forEach((lineChanged) => {
+    chunks.push({
+      type: "insert",
+      value: lineChanged,
+      at: at,
+    });
+    at += lineChanged.length;
+  });
+
+  console.log({ change, chunks });
   return chunks;
 }

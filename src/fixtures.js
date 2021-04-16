@@ -12,6 +12,18 @@ foo {
 
 // ---
 
+  "Adding two lines": [`
+foo {
+  bar
+}`.trim(),`
+foo {
+  bax
+  sol
+  bar
+}`.trim()],
+  
+// ---
+
 "Deleting all": [`
 foo {
   bar
