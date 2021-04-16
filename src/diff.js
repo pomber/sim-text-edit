@@ -56,18 +56,25 @@ export function newDiff(prev, next) {
       chunks = chunks.concat(splitInsertions(change, cursor));
       cursor += change.value.length;
     } else if (change.removed) {
-      chunks.push({
-        type: "delete",
-        value: change.value,
-        count: change.value.length,
-        at: cursor,
-      });
+      chunks = chunks.concat(splitDeletions(change, cursor));
     } else {
       cursor += change.value.length;
     }
   });
 
   return chunks;
+}
+
+function splitDeletions(change, cursor) {
+  // matches just before EOL followed by any space
+  const splitRegex = /(?=\n\s*)/g;
+  const lines = change.value.split(splitRegex);
+  return lines.map((line) => ({
+    type: "delete",
+    value: line,
+    count: line.length,
+    at: cursor,
+  }));
 }
 
 function splitInsertions(change, cursor) {
