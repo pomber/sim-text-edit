@@ -8,12 +8,12 @@ export function Code({ code, cursor }) {
   const [displayWhitespaces, setDisplayWhitespaces] = React.useState(true);
   return (
     <PreContextProvider displayWhitespaces={displayWhitespaces}>
-      <input
+      {/* <input
         type="checkbox"
         checked={displayWhitespaces}
         onChange={() => setDisplayWhitespaces((x) => !x)}
       ></input>
-      <label>Display whitespaces</label>
+      <label>Display whitespaces</label> */}
       <Highlight
         {...defaultProps}
         code={code}
@@ -21,7 +21,7 @@ export function Code({ code, cursor }) {
         theme={synthwave84}
       >
         {({ className, style, tokens, getLineProps, getTokenProps }) => (
-          <pre className={className} style={style}>
+          <pre className={className} style={{ ...style, padding: 8 }}>
             {renderTokens(tokens, getLineProps, getTokenProps, cursor)}
           </pre>
         )}
@@ -30,7 +30,7 @@ export function Code({ code, cursor }) {
   );
 }
 
-function renderTokens(tokens, getLineProps, getTokenProps, cursor) {
+function renderTokens(tokens, getLineProps, getTokenProps, cursor = -1) {
   let startPosition = 0;
   const lineElements = tokens.map((line, i) => {
     const lineLength =
@@ -43,7 +43,6 @@ function renderTokens(tokens, getLineProps, getTokenProps, cursor) {
       newLine = [];
       let columnsLeft = cursor - startPosition;
       let done = false;
-      console.log({ line });
       line.forEach((token) => {
         console.log({ columnsLeft });
         if (!done && token.content.length >= columnsLeft) {
@@ -70,7 +69,7 @@ function renderTokens(tokens, getLineProps, getTokenProps, cursor) {
       <div {...getLineProps({ line, key: i })}>
         {newLine.map((token, key) =>
           token.type === "cursor" ? (
-            <Cursor />
+            <Cursor key="cursor" />
           ) : (
             <span {...getTokenProps({ token, key })} />
           )
@@ -82,11 +81,11 @@ function renderTokens(tokens, getLineProps, getTokenProps, cursor) {
   return (
     <>
       {lineElements}
-      {tokens.map((line, index) => (
+      {/* {tokens.map((line, index) => (
         <Pre key={index}>
           {line.reduce((allLine, token) => allLine + token.content, "")}
         </Pre>
-      ))}
+      ))} */}
     </>
   );
 }
@@ -98,9 +97,9 @@ function Cursor() {
       style={{
         position: "absolute",
         // color: "red",
-        marginLeft: "-0.35rem",
-        marginTop: "-0.35rem",
-        fontSize: "1.1rem",
+        marginLeft: "-0.3em",
+        marginTop: "-0.2em",
+        fontSize: "1.1em",
       }}
     >
       |

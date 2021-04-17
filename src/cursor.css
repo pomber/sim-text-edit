@@ -1,16 +1,19 @@
 .cursor {
   animation: 1s blink step-end infinite;
+  color: rgb(253, 253, 253);
+  text-shadow: rgb(0 23 22) 0px 0px 2px, rgb(3 237 249 / 46%) 0px 0px 3px,
+    rgb(3 237 249 / 46%) 0px 0px 5px, rgb(3 237 249 / 46%) 0px 0px 8px;
 }
 
 @keyframes blink {
   from,
   to {
-    color: transparent;
-    text-shadow: none;
-  }
-  50% {
     color: rgb(253, 253, 253);
     text-shadow: rgb(0 23 22) 0px 0px 2px, rgb(3 237 249 / 46%) 0px 0px 3px,
       rgb(3 237 249 / 46%) 0px 0px 5px, rgb(3 237 249 / 46%) 0px 0px 8px;
+  }
+  50% {
+    color: transparent;
+    text-shadow: none;
   }
 }
