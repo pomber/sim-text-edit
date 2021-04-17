@@ -1,10 +1,7 @@
 import React from "react";
-import { Transition } from "./transition";
 import "./transition.stories.css";
-import { diff, newDiff } from "./diff";
 import { storiesOf } from "@storybook/react";
 import fixtures from "./fixtures";
-import { Pre, PreContextProvider } from "./pre";
 import { history } from "./history";
 import { Code } from "./code";
 
@@ -23,16 +20,9 @@ function CodeTransition({ prev, next }) {
       {(progress) => {
         const step = steps[Math.floor(progress)];
         const nextStep = steps[Math.floor(progress + 1)];
-        return (
-          <Code
-            code={step.value}
-            cursor={
-              step.cursorAfter != null
-                ? step.cursorAfter
-                : nextStep.cursorBefore
-            }
-          />
-        );
+        const cursor =
+          step.cursorAfter != null ? step.cursorAfter : nextStep.cursorBefore;
+        return <Code code={step.value} cursor={cursor} />;
       }}
     </WithProgress>
   );
